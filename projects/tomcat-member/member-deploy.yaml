@@ -23,13 +23,12 @@ spec:
         app: tomcat-member
     spec:
       imagePullSecrets:
-        - name: ecr-cred-member
+        - name: ecr-secret-member
 
       containers:
         - name: tomcat-member-container
-          image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/member-service:v1.0
+          image: 052904446348.dkr.ecr.ap-northeast-2.amazonaws.com/member-service:v8.0
           imagePullPolicy: Always
-          
           ports:
             - containerPort: 8080
           
@@ -49,6 +48,11 @@ spec:
                 secretKeyRef:
                   name: tomcat-member-secret
                   key: DB_PASSWORD
+      # Pod가 실행될 때 JVM의 System Property를 "prod"로 설정합니다.env:
+            - name: CATALINA_OPTS
+              value: "-Dspring.profiles.active=prod"
+            - name: JAVA_OPTS
+              value: "-Dspring.profiles.active=prod"
 
           resources:
             requests:
