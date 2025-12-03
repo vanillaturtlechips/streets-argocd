@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: streets-ingress-rules  
+  namespace: ingress-nginx       
+spec:
+  ingressClassName: nginx          
+  rules:
+  - host: 12-streets.store         # host: 12-streets.store
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"                  # path: /
+        backend:
+          service:
+            name: nginx-member-svc # service: nginx-member-svc
+            port:
+              number: 80
+      - pathType: Prefix
+        path: "/board.do"          # path: /board.do
+        backend:
+          service:
+            name: nginx-board-svc  # service: nginx-board-svc
+            port:
+              number: 80

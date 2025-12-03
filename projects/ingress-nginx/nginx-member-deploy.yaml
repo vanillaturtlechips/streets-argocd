@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-member
+  name: nginx-member-deploy
+  namespace: ingress-nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-member
+  template:
+    metadata:
+      labels:
+        app: nginx-member
+    spec:
+      imagePullSecrets:
+      - name: ecr-cred-nginx
+      containers:
+      - name: nginx-member-container
+        image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/streets_member_nginx:v1.2
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 60
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 60
+          periodSeconds: 20

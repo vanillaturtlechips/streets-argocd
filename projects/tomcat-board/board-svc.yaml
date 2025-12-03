@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-board-svc
+  namespace: tomcat-board
+  labels:
+    app: tomcat-board
+spec:
+  type: ClusterIP
+  selector:
+    app: tomcat-board
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

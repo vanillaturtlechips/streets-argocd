@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-board-deploy
+  namespace: tomcat-board
+  labels:
+    app: tomcat-board
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: tomcat-board
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+
+  template:
+    metadata:
+      labels:
+        app: tomcat-board
+    spec:
+      imagePullSecrets:
+        - name: ecr-cred-board
+
+      containers:
+        - name: tomcat-board-container
+          image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/board-service:v1.0
+          imagePullPolicy: Always
+          
+          ports:
+            - containerPort: 8080
+          
+          env:
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: tomcat-board-secret
+                  key: DB_URL
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tomcat-board-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tomcat-board-secret
+                  key: DB_PASSWORD
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+
+          livenessProbe:
+            httpGet:
+              path: /board.do?action=list
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            
+          readinessProbe:
+            httpGet:
+              path: /board.do?action=list
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5

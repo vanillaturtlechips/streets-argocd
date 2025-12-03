@@ -1,0 +1,39 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: tomcat-member-hpa
+  namespace: tomcat-member
+  labels:
+    app: tomcat-member
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: tomcat-member-deploy
+  
+  minReplicas: 2
+  maxReplicas: 5
+  
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests_per_second
+        target:
+          type: AverageValue
+          averageValue: 50
+          
+    - type: Pods
+      pods:
+        metric:
+          name: tomcat_threadpool_queue_size
+        target:
+          type: AverageValue
+          averageValue: 20
