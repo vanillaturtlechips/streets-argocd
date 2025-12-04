@@ -19,7 +19,7 @@ spec:
       - name: ecr-cred-nginx
       containers:
       - name: nginx-member-container
-        image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/streets_member_nginx:v1.2
+        image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/streets_member_nginx:v1.3
         ports:
         - containerPort: 80
         livenessProbe:
