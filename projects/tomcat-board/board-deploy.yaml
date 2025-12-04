@@ -27,7 +27,7 @@ spec:
 
       containers:
         - name: tomcat-board-container
-          image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/board-service:v1.0
+          image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/board-service:v1.1
           imagePullPolicy: Always
           
           ports:
