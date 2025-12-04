@@ -6,7 +6,7 @@ metadata:
   labels:
     app: tomcat-member
 spec:
-  type: LoadBalancer # 내부 전용
+  type: ClusterIP  # 내부 전용
   selector:
     app: tomcat-member
   ports:
