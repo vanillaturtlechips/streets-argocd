@@ -23,7 +23,7 @@ spec:
         app: tomcat-member
     spec:
       imagePullSecrets:
-        - name: ecr-secret-member
+        - name: ecr-cred-member
 
       containers:
         - name: tomcat-member-container
