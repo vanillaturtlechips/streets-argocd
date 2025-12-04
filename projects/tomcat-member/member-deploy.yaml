@@ -27,7 +27,7 @@ spec:
 
       containers:
         - name: tomcat-member-container
-          image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/member-service:v1.2
+          image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/member-service:v1.3
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
