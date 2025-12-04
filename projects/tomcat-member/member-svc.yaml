@@ -13,3 +13,7 @@ spec:
     - protocol: TCP
       port: 8080       # 서비스 접속 포트
       targetPort: 8080 # 컨테이너 포트
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800  # 3시간, 기본값
