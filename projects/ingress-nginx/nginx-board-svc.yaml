@@ -6,6 +6,7 @@ metadata:
   labels:
     app: nginx-board
 spec:
+  type: LoadBalancer     
   selector:
     app: nginx-board
   ports:

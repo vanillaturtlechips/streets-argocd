@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-member-deploy
+  labels:
+    app: tomcat-member
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: tomcat-member
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+
+  template:
+    metadata:
+      labels:
+        app: tomcat-member
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret-member
+
+      containers:
+        - name: tomcat-member-container
+          image: 052904446348.dkr.ecr.ap-northeast-2.amazonaws.com/member-service:v6.7
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          
+          env:
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: tomcat-member-secret
+                  key: DB_URL
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tomcat-member-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tomcat-member-secret
+                  key: DB_PASSWORD
+      # Pod가 실행될 때 JVM의 System Property를 "prod"로 설정합니다.
+            - name: CATALINA_OPTS
+              value: "-Dspring.profiles.active=prod"
+            - name: JAVA_OPTS
+              value: "-Dspring.profiles.active=prod"
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 90
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 10
+            
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 5
