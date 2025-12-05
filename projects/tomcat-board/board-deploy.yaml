@@ -75,6 +75,10 @@ spec:
                 secretKeyRef:
                   name: tomcat-board-secret
                   key: DB_PASSWORD
+            - name: CATALINA_OPTS
+              value: "-Dspring.profiles.active=prod -Denv=prod"
+            - name: JAVA_OPTS
+              value: "-Dspring.profiles.active=prod -Denv=prod"
 
           resources:
             requests:
