@@ -22,6 +22,26 @@ spec:
       labels:
         app: tomcat-board
     spec:
+      # [1] Pod Anti-Affinity (Soft): "가능하면 겹치지 마라" (실패해도 배포는 됨)
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: tomcat-board
+                topologyKey: "kubernetes.io/hostname"
+
+      # [2] Topology Spread Constraints: "어쩔 수 없이 겹치면 개수 차이를 1개 이하로 맞춰라"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "kubernetes.io/hostname"
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: tomcat-board
+
       imagePullSecrets:
         - name: ecr-cred-board
 
@@ -29,10 +49,16 @@ spec:
         - name: tomcat-board-container
           image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/board-service:v1.3
           imagePullPolicy: Always
-          
+
+          # [3] Graceful Shutdown: 10초 대기
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 10"]
+
           ports:
             - containerPort: 8080
-          
+
           env:
             - name: DB_URL
               valueFrom:
@@ -65,7 +91,7 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
-            
+
           readinessProbe:
             httpGet:
               path: /board.do?action=list

@@ -15,13 +15,42 @@ spec:
       labels:
         app: nginx-member
     spec:
+      # [1] Anti-Affinity (Soft)
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: nginx-member
+                topologyKey: "kubernetes.io/hostname"
+
+      # [2] Topology Spread
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "kubernetes.io/hostname"
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: nginx-member
+
       imagePullSecrets:
       - name: ecr-cred-nginx
+      
       containers:
       - name: nginx-member-container
         image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/streets_member_nginx:v1.3
+        
+        # [3] Graceful Shutdown
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "sleep 10"]
+
         ports:
         - containerPort: 80
+        
         livenessProbe:
           httpGet:
             path: /
