@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: nginx-board-hpa
-  namespace: nginx-board
+  namespace: ingress-nginx
   labels:
     app: nginx-board
 spec:
