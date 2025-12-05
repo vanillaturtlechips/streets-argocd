@@ -11,8 +11,8 @@ spec:
     kind: Deployment
     name: tomcat-board-deploy
   
-  minReplicas: 4
-  maxReplicas: 20
+  minReplicas: 2
+  maxReplicas: 4
   
   metrics:
     - type: Resource
