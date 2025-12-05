@@ -40,7 +40,7 @@ spec:
       
       containers:
       - name: nginx-board-container
-        image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/streets_board_nginx:v1.3
+        image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/streets_board_nginx:v1.4
         
         # [3] Graceful Shutdown
         lifecycle:
