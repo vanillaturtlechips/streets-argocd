@@ -13,8 +13,8 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      sessionAffinity: ClientIP
-      sessionAffinityConfig:
-        clientIP:
-        timeoutSeconds: 10800  # 3시간, 기본값
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+    timeoutSeconds: 10800  # 3시간, 기본값
 
