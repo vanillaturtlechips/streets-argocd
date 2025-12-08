@@ -12,7 +12,7 @@ spec:
     name: nginx-member-deploy
   
   minReplicas: 2
-  maxReplicas: 10
+  maxReplicas: 5
 
   metrics:
     - type: Resource
