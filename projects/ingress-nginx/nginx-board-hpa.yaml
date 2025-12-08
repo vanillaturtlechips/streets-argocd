@@ -29,10 +29,3 @@ spec:
           type: Utilization
           averageUtilization: 40
 
-    - type: Pods
-      pods:
-        metric:
-          name: http_requests_per_second 
-        target:
-          type: AverageValue
-          averageValue: 50
