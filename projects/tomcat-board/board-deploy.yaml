@@ -22,7 +22,7 @@ spec:
       labels:
         app: tomcat-board
     spec:
-      # [1] Pod Anti-Affinity (Soft): "가능하면 겹치지 마라" (실패해도 배포는 됨)
+      # [1] Pod Anti-Affinity (Soft)
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -33,7 +33,7 @@ spec:
                     app: tomcat-board
                 topologyKey: "kubernetes.io/hostname"
 
-      # [2] Topology Spread Constraints: "어쩔 수 없이 겹치면 개수 차이를 1개 이하로 맞춰라"
+      # [2] Topology Spread Constraints
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: "kubernetes.io/hostname"
@@ -50,7 +50,7 @@ spec:
           image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/board-service:v1.3
           imagePullPolicy: Always
 
-          # [3] Graceful Shutdown: 10초 대기
+          # [3] Graceful Shutdown
           lifecycle:
             preStop:
               exec:
@@ -60,6 +60,8 @@ spec:
             - containerPort: 8080
 
           env:
+            - name: SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE
+              value: "30"  # 기본 10 -> 30으로 증가 (동시 접속 처리량 증대)
             - name: DB_URL
               valueFrom:
                 secretKeyRef:

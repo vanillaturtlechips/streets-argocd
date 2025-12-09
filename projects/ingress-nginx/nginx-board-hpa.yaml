@@ -12,7 +12,7 @@ spec:
     name: nginx-board-deploy
   
   minReplicas: 2
-  maxReplicas: 10
+  maxReplicas: 4
 
   metrics:
     - type: Resource
