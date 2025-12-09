@@ -37,20 +37,28 @@ spec:
 
       imagePullSecrets:
       - name: ecr-cred-nginx
-      
+
       containers:
       - name: nginx-board-container
         image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/streets_board_nginx:v1.4
-        
+
         # [3] Graceful Shutdown
         lifecycle:
           preStop:
             exec:
               command: ["/bin/sh", "-c", "sleep 10"]
+        
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
 
         ports:
         - containerPort: 80
-        
+
         livenessProbe:
           httpGet:
             path: /board.do
