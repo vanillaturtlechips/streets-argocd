@@ -47,7 +47,7 @@ spec:
 
       containers:
         - name: tomcat-board-container
-          image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/board-service:v1.3
+          image: 820313036770.dkr.ecr.ap-northeast-2.amazonaws.com/board-service:v1.4
           imagePullPolicy: Always
 
           # [3] Graceful Shutdown
