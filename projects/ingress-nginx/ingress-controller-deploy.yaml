@@ -50,6 +50,8 @@ spec:
             - name: https
               containerPort: 443
               protocol: TCP
+            - name: health
+              containerPort: 10254
           livenessProbe:
             httpGet:
               path: /healthz
@@ -57,7 +59,7 @@ spec:
               scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 10
-            timeoutSeconds: 1
+            timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /healthz
@@ -65,4 +67,4 @@ spec:
               scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 10
-            timeoutSeconds: 1
+            timeoutSeconds: 5

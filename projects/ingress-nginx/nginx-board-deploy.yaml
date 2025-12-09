@@ -63,13 +63,13 @@ spec:
           httpGet:
             path: /board.do
             port: 80
-          initialDelaySeconds: 60
+          initialDelaySeconds: 10
           periodSeconds: 20
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /board.do
             port: 80
-          initialDelaySeconds: 60
+          initialDelaySeconds: 10
           periodSeconds: 20
           timeoutSeconds: 5
